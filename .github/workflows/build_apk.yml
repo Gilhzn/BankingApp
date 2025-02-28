@@ -32,8 +32,8 @@ jobs:
       - name: Build APK
         run: expo build:android -t apk
 
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: banking-app-apk
-          path: dist/*.apk
+   - name: Upload APK artifact
+  uses: actions/upload-artifact@v4  
+  with:
+    name: banking-app-apk
+    path: dist/*.apk
