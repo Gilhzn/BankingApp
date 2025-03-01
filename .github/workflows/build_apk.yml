@@ -3,7 +3,7 @@ name: Build & Deploy APK
 on:
   push:
     branches:
-      - main  # Runs workflow on every push to main branch
+      - main  # Runs on push to main branch
 
 jobs:
   build:
@@ -12,6 +12,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Verify Files
+        run: ls -la  # Debugging step to check if package.json exists
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -22,7 +27,13 @@ jobs:
         run: npm install -g expo-cli
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          if [ -f package.json ]; then
+            npm install
+          else
+            echo "❌ ERROR: package.json not found!"
+            exit 1
+          fi
 
       - name: Log in to Expo
         env:
